@@ -12,92 +12,151 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            overflow-x: hidden;
         }
 
         .container {
             width: 100%;
-            max-width: 500px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #FFD700;
-            border-radius: 20px;
+            max-width: 600px;
+            background: rgba(10, 14, 39, 0.95);
+            border: 3px solid #FFD700;
+            border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-            animation: glow 2s ease-in-out infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.3); }
-            50% { box-shadow: 0 0 50px rgba(255, 215, 0, 0.6); }
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
         }
 
         .header {
             text-align: center;
             margin-bottom: 30px;
+            animation: pulse 2s infinite;
         }
 
-        .header h1 {
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        h1 {
             color: #FFD700;
-            font-size: 2.5em;
-            text-shadow: 0 0 10px #FFD700;
+            font-size: 3em;
+            text-shadow: 0 0 20px #FFD700;
             margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+
+        .subtitle {
+            color: #00d4ff;
+            font-size: 0.9em;
             letter-spacing: 2px;
         }
 
-        .header p {
-            color: #00d4ff;
-            font-size: 0.9em;
-            font-style: italic;
-        }
-
-        .status {
-            background: #0a3d0a;
-            border: 1px solid #00ff00;
+        .status-box {
+            background: #1a2a4a;
+            border: 2px solid #00ff00;
             color: #00ff00;
-            padding: 15px;
+            padding: 20px;
             border-radius: 10px;
             text-align: center;
-            margin-bottom: 20px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-            min-height: 30px;
+            margin: 20px 0;
+            font-size: 1.1em;
+            font-weight: bold;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #status {
             animation: flicker 0.15s infinite;
         }
 
         @keyframes flicker {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
+            50% { opacity: 0.7; }
         }
 
-        #status {
-            font-weight: bold;
-        }
-
-        .controls {
-            display: flex;
-            gap: 15px;
+        .api-section {
+            background: #0a1a2a;
+            border: 2px solid #FF6B6B;
+            padding: 15px;
+            border-radius: 10px;
             margin-bottom: 20px;
-            flex-wrap: wrap;
+        }
+
+        .api-section label {
+            color: #FF6B6B;
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .api-section input {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            border: 1px solid #FF6B6B;
+            color: #00ff00;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 0.85em;
+            outline: none;
+        }
+
+        .api-section input:focus {
+            border-color: #FFD700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .input-section {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            background: #000;
+            border: 2px solid #00d4ff;
+            color: #00ff00;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 1em;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: #FFD700;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+        }
+
+        input[type="text"]::placeholder {
+            color: #666;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         button {
-            flex: 1;
-            min-width: 120px;
-            padding: 15px 20px;
+            padding: 15px;
             background: linear-gradient(135deg, #FFD700, #FFA500);
             color: #000;
             border: none;
-            border-radius: 10px;
-            font-size: 1em;
+            border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
+            font-size: 1em;
+            transition: all 0.3s;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -111,141 +170,86 @@
             transform: scale(0.95);
         }
 
-        .mic-button {
+        .mic-btn {
             background: linear-gradient(135deg, #ff6b6b, #ff4757);
             color: white;
+            grid-column: 1;
         }
 
-        .stop-button {
+        .send-btn {
+            background: linear-gradient(135deg, #00d4ff, #00a8cc);
+            color: #000;
+            grid-column: 2;
+        }
+
+        .stop-btn {
             background: linear-gradient(135deg, #a4b0bd, #8b95a5);
             color: white;
+            grid-column: 1;
         }
 
-        .input-section {
-            margin-bottom: 20px;
+        .clear-btn {
+            background: linear-gradient(135deg, #95e1d3, #38a169);
+            color: #000;
+            grid-column: 2;
         }
 
-        input[type="text"] {
-            width: 100%;
-            padding: 15px;
-            background: #1a1a2e;
+        .transcript-box {
+            background: #000;
             border: 2px solid #00d4ff;
-            color: #00ff00;
-            border-radius: 10px;
-            font-size: 1em;
-            font-family: 'Courier New', monospace;
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-
-        input[type="text"]:focus {
-            border-color: #FFD700;
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-        }
-
-        input[type="text"]::placeholder {
-            color: #666;
-        }
-
-        .transcript-section {
-            background: #0a0a1a;
-            border: 2px solid #00d4ff;
-            border-radius: 10px;
+            border-radius: 8px;
             padding: 20px;
-            min-height: 100px;
-            max-height: 200px;
+            min-height: 150px;
+            max-height: 300px;
             overflow-y: auto;
             margin-bottom: 20px;
         }
 
         #transcript {
             color: #00ff00;
-            font-family: 'Courier New', monospace;
+            font-family: monospace;
+            line-height: 1.6;
             font-size: 0.95em;
-            line-height: 1.5;
             word-wrap: break-word;
         }
 
-        .api-key-section {
-            background: #1a2a4a;
-            border: 1px solid #FF6B6B;
-            border-radius: 10px;
+        .info-box {
+            background: #0a1a2a;
+            border: 1px solid #666;
             padding: 15px;
-            margin-top: 20px;
+            border-radius: 8px;
             font-size: 0.85em;
-        }
-
-        .api-key-section label {
-            color: #FF6B6B;
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        .api-key-section input {
-            width: 100%;
-            padding: 10px;
-            background: #0a0a1a;
-            border: 1px solid #FF6B6B;
-            color: #00ff00;
-            border-radius: 5px;
-            font-size: 0.8em;
-            font-family: monospace;
-            margin-bottom: 8px;
-        }
-
-        .api-key-section small {
             color: #aaa;
-            display: block;
-            margin-top: 8px;
+            text-align: center;
         }
 
-        .responsive-controls {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+        /* Scrollbar */
+        .transcript-box::-webkit-scrollbar {
+            width: 8px;
         }
 
-        .responsive-controls button {
-            min-width: unset;
+        .transcript-box::-webkit-scrollbar-track {
+            background: #000;
+        }
+
+        .transcript-box::-webkit-scrollbar-thumb {
+            background: #FFD700;
+            border-radius: 4px;
         }
 
         @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+
             .container {
                 padding: 20px;
             }
 
-            .header h1 {
-                font-size: 2em;
-            }
-
             button {
-                padding: 12px 15px;
+                padding: 12px;
                 font-size: 0.9em;
             }
-
-            .responsive-controls {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Scrollbar styling */
-        .transcript-section::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .transcript-section::-webkit-scrollbar-track {
-            background: #0a0a1a;
-            border-radius: 10px;
-        }
-
-        .transcript-section::-webkit-scrollbar-thumb {
-            background: #FFD700;
-            border-radius: 10px;
-        }
-
-        .transcript-section::-webkit-scrollbar-thumb:hover {
-            background: #FFA500;
         }
     </style>
 </head>
@@ -253,156 +257,212 @@
     <div class="container">
         <div class="header">
             <h1>⚡ JARVIS</h1>
-            <p>Personal AI Voice Assistant</p>
+            <div class="subtitle">AI VOICE ASSISTANT</div>
         </div>
 
-        <div class="status">
-            <div id="status">System Initializing...</div>
+        <div class="api-section">
+            <label>🔑 Gemini API Key (Required):</label>
+            <input 
+                type="password" 
+                id="apiKey" 
+                placeholder="Paste your Gemini API key here..."
+            >
+            <small style="color: #999; margin-top: 5px; display: block;">
+                Get free key: https://aistudio.google.com/app/apikeys
+            </small>
+        </div>
+
+        <div class="status-box">
+            <div id="status">🔧 System Initializing...</div>
         </div>
 
         <div class="input-section">
             <input 
                 type="text" 
                 id="userInput" 
-                placeholder="Type your command, Sir..."
-                onkeypress="if(event.key==='Enter') handleJarvisResponse(this.value)"
+                placeholder="Type your command or use voice..."
+                onkeypress="if(event.key === 'Enter') sendCommand()"
             >
         </div>
 
-        <div class="responsive-controls controls">
-            <button class="mic-button" onclick="startListening()">🎤 Listen</button>
-            <button onclick="handleJarvisResponse(document.getElementById('userInput').value)">📤 Send</button>
-            <button class="stop-button" onclick="stopListening()">⏹ Stop</button>
-            <button onclick="clearTranscript()">🔄 Clear</button>
+        <div class="button-group">
+            <button class="mic-btn" onclick="startVoiceInput()">🎤 LISTEN</button>
+            <button class="send-btn" onclick="sendCommand()">📤 SEND</button>
+            <button class="stop-btn" onclick="stopVoice()">⏹️ STOP</button>
+            <button class="clear-btn" onclick="clearAll()">🔄 CLEAR</button>
         </div>
 
-        <div class="transcript-section">
-            <div id="transcript">Awaiting your command, Sir...</div>
+        <div class="transcript-box">
+            <div id="transcript">👾 Awaiting your command, Sir...</div>
         </div>
 
-        <div class="api-key-section">
-            <label>🔑 Gemini API Key:</label>
-            <input 
-                type="password" 
-                id="apiKeyInput" 
-                placeholder="Paste your API key here"
-            >
-            <small>⚠️ Your API key is stored locally only. Never share it publicly.</small>
+        <div class="info-box">
+            ℹ️ Say something or type and press Enter / click Send
         </div>
     </div>
 
     <script>
-        let recognition;
+        let recognition = null;
         let isListening = false;
 
         // Initialize Speech Recognition
         function initSpeechRecognition() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (SpeechRecognition) {
-                recognition = new SpeechRecognition();
-                recognition.lang = 'en-US';
-                recognition.continuous = false;
-                recognition.interimResults = true;
-
-                recognition.onstart = () => {
-                    isListening = true;
-                    document.getElementById('status').innerText = "Listening, Sir...";
-                };
-
-                recognition.onresult = (event) => {
-                    let transcript = '';
-                    for (let i = event.resultIndex; i < event.results.length; i++) {
-                        transcript += event.results[i][0].transcript;
-                    }
-                    document.getElementById('userInput').value = transcript;
-                };
-
-                recognition.onend = () => {
-                    isListening = false;
-                };
-
-                recognition.onerror = (event) => {
-                    document.getElementById('status').innerText = `Error: ${event.error}`;
-                };
-            } else {
-                document.getElementById('status').innerText = "Speech Recognition not supported";
+            
+            if (!SpeechRecognition) {
+                updateStatus('❌ Speech Recognition not supported');
+                return false;
             }
+
+            recognition = new SpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.continuous = false;
+            recognition.interimResults = true;
+
+            recognition.onstart = () => {
+                isListening = true;
+                updateStatus('🎤 Listening...');
+            };
+
+            recognition.onresult = (event) => {
+                let transcript = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    transcript += event.results[i][0].transcript + ' ';
+                }
+                document.getElementById('userInput').value = transcript.trim();
+            };
+
+            recognition.onend = () => {
+                isListening = false;
+                updateStatus('✅ Ready');
+            };
+
+            recognition.onerror = (event) => {
+                updateStatus(`❌ Error: ${event.error}`);
+                isListening = false;
+            };
+
+            return true;
         }
 
-        function startListening() {
+        function updateStatus(message) {
+            document.getElementById('status').innerText = message;
+        }
+
+        function updateTranscript(message) {
+            document.getElementById('transcript').innerText = message;
+        }
+
+        function startVoiceInput() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            if (!apiKey) {
+                updateStatus('❌ Please enter API key first');
+                return;
+            }
+
             if (recognition && !isListening) {
                 recognition.start();
             }
         }
 
-        function stopListening() {
+        function stopVoice() {
             if (recognition && isListening) {
                 recognition.stop();
             }
+            window.speechSynthesis.cancel();
+            updateStatus('⏹️ Stopped');
         }
 
-        async function handleJarvisResponse(input) {
-            if (!input.trim()) {
-                document.getElementById('status').innerText = "Please provide a command, Sir.";
+        function clearAll() {
+            document.getElementById('userInput').value = '';
+            updateTranscript('👾 Awaiting your command, Sir...');
+            updateStatus('✅ Ready');
+            window.speechSynthesis.cancel();
+        }
+
+        async function sendCommand() {
+            const userInput = document.getElementById('userInput').value.trim();
+            const apiKey = document.getElementById('apiKey').value.trim();
+
+            if (!userInput) {
+                updateStatus('❌ Please type or say something');
                 return;
             }
 
-            const apiKey = document.getElementById('apiKeyInput').value || "YOUR_GEMINI_API_KEY";
-            const status = document.getElementById('status');
-            
-            status.innerText = "Processing, Sir...";
+            if (!apiKey) {
+                updateStatus('❌ API key is required');
+                return;
+            }
+
+            updateStatus('⏳ Processing...');
+            updateTranscript('Processing your command...');
 
             try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{ text: `Respond as JARVIS from Iron Man. Be concise, loyal, and call the user 'Sir'. The user says: ${input}` }]
-                        }]
-                    })
-                });
+                const response = await fetch(
+                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [{
+                                    text: `You are JARVIS, the AI assistant from Iron Man. Be concise (1-2 sentences), loyal, respectful, and call the user 'Sir'. Respond to: ${userInput}`
+                                }]
+                            }]
+                        })
+                    }
+                );
 
                 if (!response.ok) {
-                    throw new Error(`API Error: ${response.status}`);
+                    const errorData = await response.json();
+                    throw new Error(errorData.error?.message || `HTTP ${response.status}`);
                 }
 
                 const data = await response.json();
-                const aiReply = data.candidates[0].content.parts[0].text;
-
-                // Display the reply
-                document.getElementById('transcript').innerText = aiReply;
-                document.getElementById('userInput').value = '';
                 
-                // Voice Output
-                speak(aiReply);
-                status.innerText = "System Ready";
+                if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+                    throw new Error('Invalid API response');
+                }
+
+                const aiReply = data.candidates[0].content.parts[0].text;
+                updateTranscript(aiReply);
+                updateStatus('✅ Response ready');
+
+                // Speak the response
+                speakResponse(aiReply);
+                document.getElementById('userInput').value = '';
 
             } catch (error) {
-                console.error("Error:", error);
-                status.innerText = `Error: ${error.message}`;
-                document.getElementById('transcript').innerText = `Error occurred: ${error.message}`;
+                console.error('Error:', error);
+                updateStatus(`❌ Error: ${error.message}`);
+                updateTranscript(`Error: ${error.message}\n\nMake sure your API key is valid and has quota.`);
             }
         }
 
-        function speak(text) {
-            const speech = new SpeechSynthesisUtterance(text);
-            speech.lang = 'en-GB';
-            speech.pitch = 0.8;
-            speech.rate = 1.1;
-            window.speechSynthesis.speak(speech);
+        function speakResponse(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-GB';
+            utterance.pitch = 0.8;
+            utterance.rate = 1;
+            utterance.volume = 1;
+
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.speak(utterance);
         }
 
-        function clearTranscript() {
-            document.getElementById('transcript').innerText = "Awaiting your command, Sir...";
-            document.getElementById('userInput').value = '';
-            document.getElementById('status').innerText = "System Ready";
-        }
-
-        // Initialize on page load
-        window.addEventListener('DOMContentLoaded', () => {
+        // Initialize on load
+        window.addEventListener('load', () => {
             initSpeechRecognition();
-            document.getElementById('status').innerText = "System Ready";
+            updateStatus('✅ System Ready');
+        });
+
+        // Handle Enter key
+        document.getElementById('userInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendCommand();
+            }
         });
     </script>
 </body>
