@@ -1,39 +1,409 @@
-// Is function ko purane code ke 'handleJarvisResponse' se replace karein
-async function handleJarvisResponse(input) {
-    const apiKey = "YOUR_GEMINI_API_KEY"; // AIzaSyBxbrMCovCi3mXneVp9-3RI8WL3imB_WTo
-    const status = document.getElementById('status');
-    
-    try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{
-                    parts: [{ text: `Respond as JARVIS from Iron Man. Be concise, loyal, and call the user 'Sir'. The user says: ${input}` }]
-                }]
-            })
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JARVIS - AI Voice Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #FFD700;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.3); }
+            50% { box-shadow: 0 0 50px rgba(255, 215, 0, 0.6); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #FFD700;
+            font-size: 2.5em;
+            text-shadow: 0 0 10px #FFD700;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            color: #00d4ff;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .status {
+            background: #0a3d0a;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            min-height: 30px;
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        #status {
+            font-weight: bold;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex: 1;
+            min-width: 120px;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .mic-button {
+            background: linear-gradient(135deg, #ff6b6b, #ff4757);
+            color: white;
+        }
+
+        .stop-button {
+            background: linear-gradient(135deg, #a4b0bd, #8b95a5);
+            color: white;
+        }
+
+        .input-section {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            background: #1a1a2e;
+            border: 2px solid #00d4ff;
+            color: #00ff00;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: 'Courier New', monospace;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #FFD700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        input[type="text"]::placeholder {
+            color: #666;
+        }
+
+        .transcript-section {
+            background: #0a0a1a;
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 100px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        #transcript {
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .api-key-section {
+            background: #1a2a4a;
+            border: 1px solid #FF6B6B;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 0.85em;
+        }
+
+        .api-key-section label {
+            color: #FF6B6B;
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .api-key-section input {
+            width: 100%;
+            padding: 10px;
+            background: #0a0a1a;
+            border: 1px solid #FF6B6B;
+            color: #00ff00;
+            border-radius: 5px;
+            font-size: 0.8em;
+            font-family: monospace;
+            margin-bottom: 8px;
+        }
+
+        .api-key-section small {
+            color: #aaa;
+            display: block;
+            margin-top: 8px;
+        }
+
+        .responsive-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .responsive-controls button {
+            min-width: unset;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            button {
+                padding: 12px 15px;
+                font-size: 0.9em;
+            }
+
+            .responsive-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scrollbar styling */
+        .transcript-section::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .transcript-section::-webkit-scrollbar-track {
+            background: #0a0a1a;
+            border-radius: 10px;
+        }
+
+        .transcript-section::-webkit-scrollbar-thumb {
+            background: #FFD700;
+            border-radius: 10px;
+        }
+
+        .transcript-section::-webkit-scrollbar-thumb:hover {
+            background: #FFA500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ JARVIS</h1>
+            <p>Personal AI Voice Assistant</p>
+        </div>
+
+        <div class="status">
+            <div id="status">System Initializing...</div>
+        </div>
+
+        <div class="input-section">
+            <input 
+                type="text" 
+                id="userInput" 
+                placeholder="Type your command, Sir..."
+                onkeypress="if(event.key==='Enter') handleJarvisResponse(this.value)"
+            >
+        </div>
+
+        <div class="responsive-controls controls">
+            <button class="mic-button" onclick="startListening()">🎤 Listen</button>
+            <button onclick="handleJarvisResponse(document.getElementById('userInput').value)">📤 Send</button>
+            <button class="stop-button" onclick="stopListening()">⏹ Stop</button>
+            <button onclick="clearTranscript()">🔄 Clear</button>
+        </div>
+
+        <div class="transcript-section">
+            <div id="transcript">Awaiting your command, Sir...</div>
+        </div>
+
+        <div class="api-key-section">
+            <label>🔑 Gemini API Key:</label>
+            <input 
+                type="password" 
+                id="apiKeyInput" 
+                placeholder="Paste your API key here"
+            >
+            <small>⚠️ Your API key is stored locally only. Never share it publicly.</small>
+        </div>
+    </div>
+
+    <script>
+        let recognition;
+        let isListening = false;
+
+        // Initialize Speech Recognition
+        function initSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (SpeechRecognition) {
+                recognition = new SpeechRecognition();
+                recognition.lang = 'en-US';
+                recognition.continuous = false;
+                recognition.interimResults = true;
+
+                recognition.onstart = () => {
+                    isListening = true;
+                    document.getElementById('status').innerText = "Listening, Sir...";
+                };
+
+                recognition.onresult = (event) => {
+                    let transcript = '';
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        transcript += event.results[i][0].transcript;
+                    }
+                    document.getElementById('userInput').value = transcript;
+                };
+
+                recognition.onend = () => {
+                    isListening = false;
+                };
+
+                recognition.onerror = (event) => {
+                    document.getElementById('status').innerText = `Error: ${event.error}`;
+                };
+            } else {
+                document.getElementById('status').innerText = "Speech Recognition not supported";
+            }
+        }
+
+        function startListening() {
+            if (recognition && !isListening) {
+                recognition.start();
+            }
+        }
+
+        function stopListening() {
+            if (recognition && isListening) {
+                recognition.stop();
+            }
+        }
+
+        async function handleJarvisResponse(input) {
+            if (!input.trim()) {
+                document.getElementById('status').innerText = "Please provide a command, Sir.";
+                return;
+            }
+
+            const apiKey = document.getElementById('apiKeyInput').value || "YOUR_GEMINI_API_KEY";
+            const status = document.getElementById('status');
+            
+            status.innerText = "Processing, Sir...";
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: `Respond as JARVIS from Iron Man. Be concise, loyal, and call the user 'Sir'. The user says: ${input}` }]
+                        }]
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const aiReply = data.candidates[0].content.parts[0].text;
+
+                // Display the reply
+                document.getElementById('transcript').innerText = aiReply;
+                document.getElementById('userInput').value = '';
+                
+                // Voice Output
+                speak(aiReply);
+                status.innerText = "System Ready";
+
+            } catch (error) {
+                console.error("Error:", error);
+                status.innerText = `Error: ${error.message}`;
+                document.getElementById('transcript').innerText = `Error occurred: ${error.message}`;
+            }
+        }
+
+        function speak(text) {
+            const speech = new SpeechSynthesisUtterance(text);
+            speech.lang = 'en-GB';
+            speech.pitch = 0.8;
+            speech.rate = 1.1;
+            window.speechSynthesis.speak(speech);
+        }
+
+        function clearTranscript() {
+            document.getElementById('transcript').innerText = "Awaiting your command, Sir...";
+            document.getElementById('userInput').value = '';
+            document.getElementById('status').innerText = "System Ready";
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            initSpeechRecognition();
+            document.getElementById('status').innerText = "System Ready";
         });
-
-        const data = await response.json();
-        const aiReply = data.candidates[0].content.parts[0].text;
-
-        // Display the reply
-        document.getElementById('transcript').innerText = aiReply;
-        
-        // Voice Output (AI Bolega)
-        speak(aiReply);
-
-    } catch (error) {
-        console.error("Error:", error);
-        status.innerText = "Connection Error, Sir.";
-    }
-}
-
-function speak(text) {
-    const speech = new SpeechSynthesisUtterance(text);
-    speech.lang = 'en-GB'; // British accent for Jarvis feel
-    speech.pitch = 0.8; 
-    speech.rate = 1.1;
-    window.speechSynthesis.speak(speech);
-    document.getElementById('status').innerText = "System Ready";
-}
+    </script>
+</body>
+</html>
